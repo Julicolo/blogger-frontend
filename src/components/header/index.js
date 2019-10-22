@@ -4,15 +4,15 @@ import {colors} from '../../utils.js';
 
 export default class Header extends React.Component {
     state = {
-        username: 'Henk',
-        password: 'null',
+        username: 'admin',
+        password: 'admin',
         isLoggedIn: false,
         isButtonClicked: false
     };
 
     componentDidMount() {
         const {username, password} = this.state;
-        const url = 'http://localhost/mysql/les4/backend/login.php';
+        const url = 'http://localhost/mysql/les4/blog-frontend/';
 
         fetch(url, {
             method: 'POST',
