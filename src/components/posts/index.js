@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-// import {colors} from '../../utils.js';
+// import {branch} from 'baobab-react/higher-order';
+// import {colors} from '../../css-utils.js';
 
 export default function Posts() {
     return (
@@ -12,7 +13,7 @@ export default function Posts() {
     );
 }
 
-export const StyledPosts = styled.div`
+const StyledPosts = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;

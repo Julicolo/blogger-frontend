@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {colors} from '../../utils.js';
+import {colors} from '../../css-utils.js';
 
 export default function Footer() {
     return (

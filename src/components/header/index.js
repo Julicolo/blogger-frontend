@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {colors} from '../../utils.js';
+import {colors} from '../../css-utils.js';
 
 export default class Header extends React.Component {
     state = {
@@ -12,21 +12,13 @@ export default class Header extends React.Component {
 
     componentDidMount() {
         const {username, password} = this.state;
-        const url = 'http://localhost/mysql/les4/blog-backend/';
+        const url = 'http://localhost/mysql/les4/blog-backend/login.php';
 
         fetch(url, {
             method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrer: 'no-referrer',
             body: JSON.stringify({
-                username: username,
-                password: password
+                username,
+                password
             })
         })
             .then(response => response.json())
