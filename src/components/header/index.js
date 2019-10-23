@@ -12,7 +12,7 @@ export default class Header extends React.Component {
 
     componentDidMount() {
         const {username, password} = this.state;
-        const url = 'http://localhost/mysql/les4/blog-frontend/';
+        const url = 'http://localhost/mysql/les4/blog-backend/';
 
         fetch(url, {
             method: 'POST',
