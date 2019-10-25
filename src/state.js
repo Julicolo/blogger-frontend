@@ -1,12 +1,13 @@
 import Baobab from 'baobab';
 
-const tree = new Baobab({
-    user: {
-        name: null,
-        isAdmin: false,
-        posts: {}
-    },
+const state = new Baobab({
+    colors: ['yellow', 'blue', 'orange'],
+    alternativeColors: ['purple', 'orange', 'black'],
+    isLoginButtonClicked: false,
+    username: false,
+    isAdmin: false,
+    posts: {},
     ip: ''
 });
 
-export default tree;
+export default state;

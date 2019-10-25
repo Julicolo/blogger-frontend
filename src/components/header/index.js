@@ -1,61 +1,60 @@
 import React from 'react';
 import styled from 'styled-components';
+import {branch} from 'baobab-react/higher-order';
 import {colors} from '../../css-utils.js';
 
-export default class Header extends React.Component {
-    state = {
-        username: 'admin',
-        password: 'admin',
-        isLoggedIn: false,
-        isButtonClicked: false
-    };
+const Header = function(props) {
+    const {username} = props;
 
-    componentDidMount() {
-        const {username, password} = this.state;
-        const url = 'http://localhost/mysql/les4/blog-backend/login.php';
+    return (
+        <React.Fragment>
+            <TopBar>
+                <h1>Blogger</h1>
+                <div className="user-options">
+                    <span>{username && 'Welcome, ' + username}</span>
+                    {!username ? (
+                        <button
+                            onClick={() => {
+                                props.dispatch(state => state.set('isLoginButtonClicked', true));
+                            }}
+                        >
+                            Login
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => {
+                                props.dispatch(state => {
+                                    state.set({
+                                        isLoginButtonClicked: false,
+                                        username: false
+                                    });
+                                });
+                            }}
+                        >
+                            Logout
+                        </button>
+                    )}
+                </div>
+            </TopBar>
+            <StyledHeader>
+                <nav>
+                    <ul>
+                        <li>Home</li>
+                        <li>Random post</li>
+                    </ul>
+                </nav>
+            </StyledHeader>
+        </React.Fragment>
+    );
+};
 
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                username,
-                password
-            })
-        })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result);
-            });
-    }
-
-    render() {
-        const {username, isLoggedIn} = this.state;
-
-        return (
-            <React.Fragment>
-                <TopBar>
-                    <h1>Blogger</h1>
-                    <div className="user-options">
-                        <span>{isLoggedIn ? `Welcome, ${username}` : ''}</span>
-                        {isLoggedIn ? (
-                            <button onClick={() => this.setState({isLoggedIn: false})}>Logout</button>
-                        ) : (
-                            <button onClick={() => this.setState({isButtonClicked: true})}>Sign in</button>
-                        )}
-                    </div>
-                </TopBar>
-                <StyledHeader>
-                    <nav>
-                        <ul>
-                            <li>Home</li>
-                            <li>Categories</li>
-                            <li>Random post</li>
-                        </ul>
-                    </nav>
-                </StyledHeader>
-            </React.Fragment>
-        );
-    }
-}
+export default branch(
+    {
+        isLoginButtonClicked: 'isLoginButtonClicked',
+        username: 'username'
+    },
+    Header
+);
 
 export const TopBar = styled.div`
     display: flex;
