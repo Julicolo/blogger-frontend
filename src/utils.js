@@ -1,5 +1,11 @@
 import {createGlobalStyle} from 'styled-components';
 
+export const colors = {
+    main: '#3192e6',
+    light: '#ecf7ff',
+    deactive: '#999'
+};
+
 export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -12,11 +18,10 @@ export const GlobalStyle = createGlobalStyle`
   body {  
     padding: 0;
     margin: 0;
+    overflow: overlay;
+    
+    &.no-scroll {
+      overflow: hidden;
+    }
   }
-
 `;
-
-export const colors = {
-  main: '#42C663',
-  white: 'white'
-};

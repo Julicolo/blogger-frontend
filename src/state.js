@@ -1,13 +1,11 @@
 import Baobab from 'baobab';
 
 const state = new Baobab({
-    colors: ['yellow', 'blue', 'orange'],
-    alternativeColors: ['purple', 'orange', 'black'],
-    isLoginButtonClicked: false,
-    username: false,
+    username: undefined,
+    blogOpen: false,
     isAdmin: false,
-    posts: {},
-    ip: ''
+    posts: [],
+    ip: undefined
 });
 
 export default state;

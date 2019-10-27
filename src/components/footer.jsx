@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {colors} from '../../css-utils.js';
-import github from '../../resources/svg/github.svg';
+import {colors} from '../utils.js';
+import github from '../resources/github.svg';
 
 export default function Footer() {
     return (
@@ -16,13 +16,13 @@ export default function Footer() {
     );
 }
 
-export const StyledFooter = styled.footer`
+const StyledFooter = styled.footer`
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: ${colors.main};
     padding: 0.5rem 0;
-    color: ${colors.white};
+    color: white;
 
     img {
         width: 1.5rem;
