@@ -66,8 +66,10 @@ const StyledForm = styled.div`
         background: ${colors.main};
         font-size: 1.5rem;
         color: white;
+        cursor: pointer;
         &.deactive {
             background: #999;
+            cursor: not-allowed;
         }
     }
 

@@ -26,7 +26,7 @@ export default function Login({...props}) {
                         passwordCorrect(false);
                     } else {
                         props.setUserDetails(result[0].username, result[0].admin);
-                        props.backToHome();
+                        props.closeAllPages();
                     }
                 });
         }
@@ -79,8 +79,10 @@ const StyledForm = styled.div`
         background: ${colors.main};
         font-size: 1.5rem;
         color: white;
+        cursor: pointer;
         &.deactive {
             background: ${colors.deactive};
+            cursor: blocked;
         }
     }
 

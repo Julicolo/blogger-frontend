@@ -5,10 +5,9 @@ import {colors} from '../utils.js';
 export default function Posts({...props}) {
     const url = 'http://localhost/mysql/les4/blog-backend/posts.php',
         [blogPosts, setBlogPosts] = useState([]),
-        [isBlogOpen, setBlogOpen] = useState(false),
         [isEndReached, setEndReached] = useState(false),
         [start, setNewStart] = useState(0),
-        {username, isAdmin} = props;
+        {username, isAdmin, setBlogPostId} = props;
 
     useEffect(() => {
         function fetchData() {
@@ -30,28 +29,30 @@ export default function Posts({...props}) {
     }, [start]);
 
     useEffect(() => {
-        window.addEventListener('scroll', () => {
+        function loadMorePosts() {
             const height = document.documentElement.offsetHeight,
                 scrolled = window.scrollY + window.innerHeight;
 
             if (height * 0.85 <= scrolled) {
-                setNewStart(start => start + 10);
+                return setNewStart(start => start + 10);
             }
-        });
+        }
+
+        window.addEventListener('scroll', loadMorePosts);
+
+        return () => window.removeEventListener('scroll', loadMorePosts);
     }, []);
 
     return (
         <React.Fragment>
             {username && <Greeting>{'Welcome back, ' + username + ' :)'}</Greeting>}
             {blogPosts.map(post => (
-                <React.Fragment key={post.id}>
-                    <PostPreview onClick={() => setBlogOpen(post.id)}>
-                        {isAdmin && <h2>Post ID: {post.id}</h2>}
-                        <h2>{post.title.replace(/\w/, c => c.toUpperCase())}</h2>
-                        <p>{post.post_content.slice(0, 600).replace(/\w/, c => c.toUpperCase()) + '...'}</p>
-                        <h3>By: {post.author_name.replace(/\w/, c => c.toUpperCase())}</h3>
-                    </PostPreview>
-                </React.Fragment>
+                <PostPreview key={post.id} onClick={() => setBlogPostId(post.id)}>
+                    {isAdmin && <h2>Post ID: {post.id}</h2>}
+                    <h2>{post.title.replace(/\w/, c => c.toUpperCase())}</h2>
+                    <p>{post.post_content.slice(0, 600).replace(/\w/, c => c.toUpperCase()) + '...'}</p>
+                    <h3>By: {post.author_name.replace(/\w/, c => c.toUpperCase())}</h3>
+                </PostPreview>
             ))}
             {isEndReached && (
                 <End>
@@ -73,6 +74,7 @@ const PostPreview = styled.div`
     background: ${colors.light};
     padding: 1rem 2rem;
     margin-bottom: 3rem;
+    cursor: pointer;
 
     h3 {
         float: right;

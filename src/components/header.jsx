@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import {colors} from '../utils.js';
 
 export default function Header({...props}) {
-    const {username, isAdmin, openCreatePostPage, openLoginPage, setUserDetails, backToHome} = props;
+    const {username, isAdmin, openCreatePostPage, openLoginPage, setUserDetails, closeAllPages} = props;
 
     return (
         <TopBar>
-            <h1 onClick={backToHome}>Blogger</h1>
+            <h1 onClick={closeAllPages}>Blogger</h1>
             <div className="options">
                 {isAdmin && (
                     <button className="create-post-btn" onClick={() => openCreatePostPage(true)}>
@@ -18,7 +18,7 @@ export default function Header({...props}) {
                     <button
                         onClick={() => {
                             setUserDetails(undefined, false);
-                            backToHome();
+                            closeAllPages();
                         }}
                     >
                         Logout
@@ -44,6 +44,7 @@ const TopBar = styled.div`
     h1 {
         margin: 0 1rem;
         color: white;
+        cursor: pointer;
     }
 
     button {
@@ -58,12 +59,7 @@ const TopBar = styled.div`
         outline: none;
         font-size: 1rem;
         margin: 0 1rem;
-
-        a {
-            color: ${colors.main};
-            text-decoration: none;
-            font-size: 1rem;
-        }
+        cursor: pointer;
     }
 
     .create-post-btn {
@@ -74,11 +70,5 @@ const TopBar = styled.div`
         display: flex;
         flex-flow: row wrap;
         align-items: center;
-
-        span {
-            margin: 0 1rem;
-            color: white;
-            font-size: 1.5rem;
-        }
     }
 `;

@@ -5,24 +5,39 @@ import Posts from './components/posts.jsx';
 import Footer from './components/footer.jsx';
 import Login from './components/login.jsx';
 import CreatePost from './components/create-post.jsx';
-// import Post from './components/post.jsx';
+import Post from './components/post.jsx';
 
 export default class Main extends React.Component {
     state = {
         username: undefined,
         isAdmin: false,
         isLoginPageOpen: false,
-        isCreatePostPageOpen: false
+        isCreatePostPageOpen: false,
+        blogPostId: undefined
     };
 
-    backToHome = () => this.setState({isLoginPageOpen: false, isCreatePostPageOpen: false});
-    openLoginPage = () => this.setState({isLoginPageOpen: true});
-    openCreatePostPage = () => this.setState({isCreatePostPageOpen: true});
+    closeAllPages = () => {
+        this.setState({isLoginPageOpen: false, isCreatePostPageOpen: false, blogPostId: undefined});
+    };
+
+    openLoginPage = () => {
+        this.closeAllPages();
+        this.setState({isLoginPageOpen: true});
+    };
+
+    openCreatePostPage = () => {
+        this.closeAllPages();
+        this.setState({isCreatePostPageOpen: true});
+    };
 
     setUserDetails = (username, isAdmin) => this.setState({username: username, isAdmin: isAdmin});
 
+    setBlogPostId = id => this.setState({blogPostId: id});
+
     render() {
-        const {username, isAdmin, isLoginPageOpen, isCreatePostPageOpen} = this.state;
+        const {username, isAdmin, isLoginPageOpen, isCreatePostPageOpen, blogPostId} = this.state;
+
+        console.log(this.state);
 
         return (
             <Container>
@@ -30,18 +45,23 @@ export default class Main extends React.Component {
                     username={username}
                     isAdmin={isAdmin}
                     isLoginPageOpen={isLoginPageOpen}
-                    backToHome={this.backToHome}
+                    closeAllPages={this.closeAllPages}
                     openLoginPage={this.openLoginPage}
                     openCreatePostPage={this.openCreatePostPage}
                     setUserDetails={this.setUserDetails}
                 />
                 <Content>
                     {isLoginPageOpen && (
-                        <Login setUserDetails={this.setUserDetails} backToHome={this.backToHome} />
+                        <Login setUserDetails={this.setUserDetails} closeAllPages={this.closeAllPages} />
                     )}
                     {isCreatePostPageOpen && <CreatePost username={username} />}
-                    {!isLoginPageOpen && !isCreatePostPageOpen && (
-                        <Posts username={username} isAdmin={isAdmin} />
+                    {blogPostId !== undefined ? (
+                        <Post blogPostId={blogPostId} />
+                    ) : (
+                        !isLoginPageOpen &&
+                        !isCreatePostPageOpen && (
+                            <Posts username={username} isAdmin={isAdmin} setBlogPostId={this.setBlogPostId} />
+                        )
                     )}
                 </Content>
                 <Footer />
