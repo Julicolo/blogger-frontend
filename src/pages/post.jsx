@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import {capitalizeFirstLetter} from '../utils.js';
 
 export default function Post({...props}) {
     const url = 'http://localhost/mysql/les4/blog-backend/post.php',
@@ -27,9 +28,9 @@ export default function Post({...props}) {
 
     return (
         <StyledPost>
-            <h2>{title.replace(/\w/, c => c.toUpperCase())}</h2>
-            <h3>By: {author.replace(/\w/, c => c.toUpperCase())}</h3>
-            <p>{postContent.replace(/\w/, c => c.toUpperCase())}</p>
+            <h2>{capitalizeFirstLetter(title)}</h2>
+            <h3>By: {capitalizeFirstLetter(author)}</h3>
+            <p>{capitalizeFirstLetter(postContent)}</p>
         </StyledPost>
     );
 }

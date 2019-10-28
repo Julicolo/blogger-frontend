@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors, capitalizeFirstLetter} from '../utils.js';
 
-export default function Posts({...props}) {
+export default function Landing({...props}) {
     const url = 'http://localhost/mysql/les4/blog-backend/posts.php',
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),
@@ -49,9 +49,9 @@ export default function Posts({...props}) {
             {blogPosts.map(post => (
                 <PostPreview key={post.id} onClick={() => setBlogPostId(post.id)}>
                     {isAdmin && <h2>Post ID: {post.id}</h2>}
-                    <h2>{post.title.replace(/\w/, c => c.toUpperCase())}</h2>
-                    <p>{post.post_content.slice(0, 600).replace(/\w/, c => c.toUpperCase()) + '...'}</p>
-                    <h3>By: {post.author_name.replace(/\w/, c => c.toUpperCase())}</h3>
+                    <h2>{capitalizeFirstLetter(post.title)}</h2>
+                    <p>{capitalizeFirstLetter(post.post_content.slice(0, 600)) + '...'}</p>
+                    <h3>By: {capitalizeFirstLetter(post.author_name)}</h3>
                 </PostPreview>
             ))}
             {isEndReached && (
@@ -75,6 +75,7 @@ const PostPreview = styled.div`
     padding: 1rem 2rem;
     margin-bottom: 3rem;
     cursor: pointer;
+    border-radius: 1rem;
 
     h3 {
         float: right;

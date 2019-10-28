@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './components/header.jsx';
-import Posts from './components/posts.jsx';
 import Footer from './components/footer.jsx';
-import Login from './components/login.jsx';
-import CreatePost from './components/create-post.jsx';
-import Post from './components/post.jsx';
+import CreatePost from './pages/create-post.jsx';
+import Blacklist from './pages/blacklist.jsx';
+import Landing from './pages/landing.jsx';
+import Login from './pages/login.jsx';
+import Post from './pages/post.jsx';
 
 export default class Main extends React.Component {
     state = {
@@ -13,11 +14,17 @@ export default class Main extends React.Component {
         isAdmin: false,
         isLoginPageOpen: false,
         isCreatePostPageOpen: false,
+        isBlacklistPageOpen: false,
         blogPostId: undefined
     };
 
     closeAllPages = () => {
-        this.setState({isLoginPageOpen: false, isCreatePostPageOpen: false, blogPostId: undefined});
+        this.setState({
+            blogPostId: undefined,
+            isLoginPageOpen: false,
+            isCreatePostPageOpen: false,
+            isBlacklistPageOpen: false
+        });
     };
 
     openLoginPage = () => {
@@ -30,12 +37,24 @@ export default class Main extends React.Component {
         this.setState({isCreatePostPageOpen: true});
     };
 
+    openBlackListPage = () => {
+        this.closeAllPages();
+        this.setState({isBlacklistPageOpen: true});
+    };
+
     setUserDetails = (username, isAdmin) => this.setState({username: username, isAdmin: isAdmin});
 
     setBlogPostId = id => this.setState({blogPostId: id});
 
     render() {
-        const {username, isAdmin, isLoginPageOpen, isCreatePostPageOpen, blogPostId} = this.state;
+        const {
+            username,
+            isAdmin,
+            blogPostId,
+            isLoginPageOpen,
+            isCreatePostPageOpen,
+            isBlacklistPageOpen
+        } = this.state;
 
         console.log(this.state);
 
@@ -48,19 +67,29 @@ export default class Main extends React.Component {
                     closeAllPages={this.closeAllPages}
                     openLoginPage={this.openLoginPage}
                     openCreatePostPage={this.openCreatePostPage}
+                    openBlackListPage={this.openBlackListPage}
                     setUserDetails={this.setUserDetails}
                 />
                 <Content>
                     {isLoginPageOpen && (
                         <Login setUserDetails={this.setUserDetails} closeAllPages={this.closeAllPages} />
                     )}
+
                     {isCreatePostPageOpen && <CreatePost username={username} />}
+
+                    {isBlacklistPageOpen && <Blacklist />}
+
                     {blogPostId !== undefined ? (
                         <Post blogPostId={blogPostId} />
                     ) : (
                         !isLoginPageOpen &&
+                        !isBlacklistPageOpen &&
                         !isCreatePostPageOpen && (
-                            <Posts username={username} isAdmin={isAdmin} setBlogPostId={this.setBlogPostId} />
+                            <Landing
+                                username={username}
+                                isAdmin={isAdmin}
+                                setBlogPostId={this.setBlogPostId}
+                            />
                         )
                     )}
                 </Content>

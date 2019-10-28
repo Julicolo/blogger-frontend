@@ -3,17 +3,37 @@ import styled from 'styled-components';
 import {colors} from '../utils.js';
 
 export default function Header({...props}) {
-    const {username, isAdmin, openCreatePostPage, openLoginPage, setUserDetails, closeAllPages} = props;
+    const {
+        username,
+        isAdmin,
+        setUserDetails,
+        openCreatePostPage,
+        openLoginPage,
+        openBlackListPage,
+        closeAllPages
+    } = props;
+
+    const adminButtons = [
+        {
+            text: 'Create Post',
+            fn: () => openCreatePostPage(true)
+        },
+        {
+            text: 'Blacklist',
+            fn: () => openBlackListPage(true)
+        }
+    ];
 
     return (
         <TopBar>
             <h1 onClick={closeAllPages}>Blogger</h1>
             <div className="options">
-                {isAdmin && (
-                    <button className="create-post-btn" onClick={() => openCreatePostPage(true)}>
-                        Create post
-                    </button>
-                )}
+                {isAdmin &&
+                    adminButtons.map((btn, index) => (
+                        <button key={index} onClick={btn.fn}>
+                            {btn.text}
+                        </button>
+                    ))}
                 {username ? (
                     <button
                         onClick={() => {
@@ -52,18 +72,14 @@ const TopBar = styled.div`
         justify-content: center;
         align-items: center;
         height: 2.2rem;
-        width: 5rem;
+        width: 9rem;
         color: ${colors.main};
         border: 1px solid ${colors.main};
-        border-radius: 0.2rem;
+        border-radius: 1rem;
         outline: none;
         font-size: 1rem;
         margin: 0 1rem;
         cursor: pointer;
-    }
-
-    .create-post-btn {
-        width: 9rem;
     }
 
     .options {
