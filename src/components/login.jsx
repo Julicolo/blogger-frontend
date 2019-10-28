@@ -1,15 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {branch} from 'baobab-react/higher-order';
-import {Redirect} from 'react-router';
 import {colors} from '../utils.js';
 
-class Login extends React.Component {
-    state = {username: 'admin', password: 'admin', correctPassword: null};
+export default function Login({...props}) {
+    const [username, setUsername] = useState('admin'),
+        [password, setPassword] = useState('admin'),
+        [isPasswordCorrect, passwordCorrect] = useState(true);
 
-    handleClick() {
-        const {username, password} = this.state,
-            url = 'http://localhost/mysql/les4/blog-backend/login.php';
+    function handleClick() {
+        const url = 'http://localhost/mysql/les4/blog-backend/login.php';
 
         if (username !== '' && password !== '') {
             fetch(url, {
@@ -22,68 +21,47 @@ class Login extends React.Component {
                 .then(response => response.json())
                 .then(result => {
                     if (result === null) {
-                        this.setState({
-                            username: '',
-                            password: '',
-                            correctPassword: false
-                        });
+                        setUsername('');
+                        setPassword('');
+                        passwordCorrect(false);
                     } else {
-                        this.setState({correctPassword: true});
-                        this.props.dispatch(state => {
-                            state.set({
-                                username: result[0].username,
-                                isAdmin: result[0].admin ? true : false
-                            });
-                        });
+                        props.setUserDetails(result[0].username, result[0].admin);
+                        props.backToHome();
                     }
                 });
         }
     }
 
-    render() {
-        const {username, password, correctPassword} = this.state;
-
-        if (correctPassword) return <Redirect to="/" />;
-
-        return (
-            <StyledForm>
-                <h2>{correctPassword && "We couldn't find an username with that password!"}</h2>
-                <div className="input-wrapper">
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={username || ''}
-                        onChange={e => this.setState({username: e.target.value})}
-                    />
-                </div>
-                <div className="input-wrapper">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={password || ''}
-                        onChange={e => this.setState({password: e.target.value})}
-                    />
-                </div>
-                <button
-                    className={username === '' || password === '' ? 'deactive' : ''}
-                    onClick={() => this.handleClick()}
-                >
-                    Login
-                </button>
-            </StyledForm>
-        );
-    }
+    return (
+        <StyledForm>
+            <h2>{!isPasswordCorrect && "We couldn't find an username with that password!"}</h2>
+            <div className="input-wrapper">
+                <label htmlFor="username">Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                />
+            </div>
+            <div className="input-wrapper">
+                <label htmlFor="password">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </div>
+            <button
+                className={username === '' || password === '' ? 'deactive' : undefined}
+                onClick={handleClick}
+            >
+                Login
+            </button>
+        </StyledForm>
+    );
 }
-
-export default branch(
-    {
-        username: 'username',
-        isAdmin: 'isAdmin'
-    },
-    Login
-);
 
 const StyledForm = styled.div`
     display: flex;

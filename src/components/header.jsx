@@ -1,42 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
-import {branch} from 'baobab-react/higher-order';
-import {Link} from 'react-router-dom';
 import {colors} from '../utils.js';
 
-const Header = function(props) {
-    const {username, isAdmin, dispatch} = props;
+export default function Header({...props}) {
+    const {username, isAdmin, openCreatePostPage, openLoginPage, setUserDetails, backToHome} = props;
 
     return (
         <TopBar>
-            <h1>
-                <Link to="/">Blogger</Link>
-            </h1>
+            <h1 onClick={backToHome}>Blogger</h1>
             <div className="options">
                 {isAdmin && (
-                    <button className="create-post-btn">
-                        <Link to="/create-post">Create post</Link>
+                    <button className="create-post-btn" onClick={() => openCreatePostPage(true)}>
+                        Create post
                     </button>
                 )}
-                {!username ? (
-                    <button>
-                        <Link to="/login">Login</Link>
+                {username ? (
+                    <button
+                        onClick={() => {
+                            setUserDetails(undefined, false);
+                            backToHome();
+                        }}
+                    >
+                        Logout
                     </button>
                 ) : (
-                    <button onClick={() => dispatch(state => state.set({username: false}))}>Logout</button>
+                    <button onClick={openLoginPage}>Login</button>
                 )}
             </div>
         </TopBar>
     );
-};
-
-export default branch(
-    {
-        username: 'username',
-        isAdmin: 'isAdmin'
-    },
-    Header
-);
+}
 
 const TopBar = styled.div`
     display: flex;
@@ -50,12 +43,7 @@ const TopBar = styled.div`
 
     h1 {
         margin: 0 1rem;
-        color: black;
-
-        a {
-            text-decoration: none;
-            color: white;
-        }
+        color: white;
     }
 
     button {

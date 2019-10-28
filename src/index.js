@@ -1,20 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {useRoot} from 'baobab-react/hooks';
-import state from './state';
 import Main from './main.jsx';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {GlobalStyle} from './utils';
 
-const App = function({store}) {
-    const Root = useRoot(store);
-
+function App() {
     return (
-        <Root>
-            <Router>
-                <Main />
-            </Router>
-        </Root>
+        <React.Fragment>
+            <GlobalStyle />
+            <Main />
+        </React.Fragment>
     );
-};
+}
 
-ReactDOM.render(<App store={state} />, document.querySelector('.root'));
+ReactDOM.render(<App />, document.querySelector('.root'));

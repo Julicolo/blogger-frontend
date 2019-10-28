@@ -1,80 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {branch} from 'baobab-react/higher-order';
 import {colors} from '../utils.js';
 
-class CreatePosts extends React.Component {
-    state = {
-        title: '',
-        author: this.props.username,
-        postContent: '',
-        submitted: false
-    };
+export default function CreatePost(props) {
+    const [title, setTitle] = useState(''),
+        [postContent, setPostContent] = useState(''),
+        [isPostSubmitted, submitPost] = useState(false);
 
-    handleClick() {
-        const {title, author, postContent} = this.state,
-            url = 'http://localhost/mysql/les4/blog-backend/create-post.php';
+    function handleClick() {
+        const url = 'http://localhost/mysql/les4/blog-backend/create-post.php';
 
         if (title !== '' && postContent !== '') {
             fetch(url, {
                 method: 'POST',
                 body: JSON.stringify({
                     title,
-                    author,
-                    postContent
+                    postContent,
+                    author: props.username
                 })
-            })
-                .then(response => response.json())
-                .then(result => {
-                    this.setState({
-                        title: '',
-                        postContent: '',
-                        submitted: result === null ? false : true
-                    });
-                });
+            }).then(() => {
+                setTitle('');
+                setPostContent('');
+                submitPost(true);
+            });
         }
     }
 
-    render() {
-        const {submitted, title, postContent} = this.state;
-
-        return (
-            <StyledForm>
-                {submitted && <h2>Successfully submitted your blog post!</h2>}
-                <div className="input-wrapper">
-                    <label htmlFor="title">Title</label>
-                    <input type="text" name="title" onChange={e => this.setState({title: e.target.value})} />
-                </div>
-                <div className="input-wrapper">
-                    <label htmlFor="postContent">Post Content</label>
-                    <textarea
-                        type="big"
-                        name="postContent"
-                        cols="60"
-                        rows="15"
-                        onChange={e => this.setState({postContent: e.target.value})}
-                    />
-                </div>
-                <button
-                    className={title === '' || postContent === '' ? 'deactive' : ''}
-                    onClick={() => this.handleClick()}
-                >
-                    Submit blog post!
-                </button>
-            </StyledForm>
-        );
-    }
+    return (
+        <StyledForm>
+            {isPostSubmitted && <h2>Successfully submitted your blog post!</h2>}
+            <div className="input-wrapper">
+                <label htmlFor="title">Title</label>
+                <input type="text" name="title" onChange={e => setTitle(e.target.value)} />
+            </div>
+            <div className="input-wrapper">
+                <label htmlFor="postContent">Post Content</label>
+                <textarea
+                    type="big"
+                    name="postContent"
+                    cols="60"
+                    rows="15"
+                    onChange={e => setPostContent(e.target.value)}
+                />
+            </div>
+            <button className={title === '' || postContent === '' ? 'deactive' : ''} onClick={handleClick}>
+                Submit blog post!
+            </button>
+        </StyledForm>
+    );
 }
-
-export default branch(
-    {
-        username: 'username',
-        isAdmin: 'isAdmin',
-        posts: ['posts'],
-        ip: ''
-    },
-    CreatePosts
-);
 
 const StyledForm = styled.div`
     display: flex;
