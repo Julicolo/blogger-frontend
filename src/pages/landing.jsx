@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors, capitalizeFirstLetter} from '../utils.js';
 
-export default function Landing({...props}) {
+export default function Landing(props) {
     const url = 'http://localhost/mysql/les4/blog-backend/posts.php',
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),

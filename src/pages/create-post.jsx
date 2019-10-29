@@ -88,6 +88,7 @@ const StyledForm = styled.div`
         input {
             width: 60rem;
             font-size: 2rem;
+            padding: 0.3rem;
         }
 
         textarea {

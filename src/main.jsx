@@ -10,20 +10,20 @@ import Post from './pages/post.jsx';
 
 export default class Main extends React.Component {
     state = {
-        username: undefined,
         isAdmin: false,
+        username: undefined,
+        blogPostId: undefined,
         isLoginPageOpen: false,
-        isCreatePostPageOpen: false,
         isBlacklistPageOpen: false,
-        blogPostId: undefined
+        isCreatePostPageOpen: false
     };
 
     closeAllPages = () => {
         this.setState({
             blogPostId: undefined,
             isLoginPageOpen: false,
-            isCreatePostPageOpen: false,
-            isBlacklistPageOpen: false
+            isBlacklistPageOpen: false,
+            isCreatePostPageOpen: false
         });
     };
 
@@ -56,8 +56,6 @@ export default class Main extends React.Component {
             isBlacklistPageOpen
         } = this.state;
 
-        console.log(this.state);
-
         return (
             <Container>
                 <Header
@@ -80,7 +78,7 @@ export default class Main extends React.Component {
                     {isBlacklistPageOpen && <Blacklist />}
 
                     {blogPostId !== undefined ? (
-                        <Post blogPostId={blogPostId} />
+                        <Post blogPostId={blogPostId} username={username} />
                     ) : (
                         !isLoginPageOpen &&
                         !isBlacklistPageOpen &&

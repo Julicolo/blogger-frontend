@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function Blacklist({...props}) {
+export default function Blacklist(props) {
     const url = 'http://localhost/mysql/les4/blog-backend/blacklist.php',
-        [ipAdresses, setIpAdressses] = useState([]);
+        [ipAdresses, setIpAdressses] = useState([]),
+        [addId, setAddId] = useState(''),
+        [deleteId, setDeleteId] = useState(undefined);
 
     useEffect(() => {
         function fetchData() {
@@ -14,17 +16,39 @@ export default function Blacklist({...props}) {
                     setIpAdressses([...result]);
                 });
         }
+
         fetchData();
     }, []);
+
+    function addIpAdress() {
+        return fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                add: addId
+            })
+        }).then(() => setAddId(true));
+    }
+
+    function removeIpAdress(id) {
+        return fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                delete: id
+            })
+        }).then(() => setDeleteId(undefined));
+    }
 
     return (
         <React.Fragment>
             <UserOptions>
                 <label htmlFor="ip-adress">IP adress</label>
-                <input type="text" name="ip-adress" />
-                <button>Block!</button>
+                <input type="text" name="ip-adress" onChange={e => setAddId(e.target.value)} />
+                <button className={addId === '' ? 'deactive' : undefined} onClick={() => addIpAdress()}>
+                    Block!
+                </button>
             </UserOptions>
             <StyledTable>
+                <h2>{deleteId || addId === true ? 'Successfully (un)blocked an IP adress!' : undefined}</h2>
                 <div className="row heading">
                     <span>ID</span>
                     <span>Date Added</span>
@@ -36,7 +60,7 @@ export default function Blacklist({...props}) {
                         <span>{ipObj.id}</span>
                         <span>{ipObj.date_added}</span>
                         <span>{ipObj.ip_adress}</span>
-                        <span role="img" aria-label="cross-emoticon">
+                        <span role="img" aria-label="cross-emoticon" onClick={() => removeIpAdress(ipObj.id)}>
                             ❌
                         </span>
                     </div>
@@ -59,15 +83,12 @@ const StyledTable = styled.div`
         border: 1px solid black;
         border-top: none;
 
-        :first-child {
-            border-top: 1px solid black;
-        }
-
         :nth-child(odd) {
             background-color: ${colors.light};
         }
 
         &.heading {
+            border-top: 1px solid black;
             font-weight: 600;
         }
 
@@ -77,6 +98,9 @@ const StyledTable = styled.div`
             align-items: center;
             width: 25%;
             padding: 0.5rem;
+            :last-child {
+                cursor: pointer;
+            }
 
             :not(:last-child) {
                 border-right: 1px solid black;

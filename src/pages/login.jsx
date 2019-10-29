@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function Login({...props}) {
+export default function Login(props) {
     const [username, setUsername] = useState('admin'),
         [password, setPassword] = useState('admin'),
         [isPasswordCorrect, passwordCorrect] = useState(true);
@@ -101,6 +101,7 @@ const StyledForm = styled.div`
         input {
             width: 20rem;
             font-size: 2rem;
+            padding: 0.3rem;
         }
     }
 `;

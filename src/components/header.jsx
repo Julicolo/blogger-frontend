@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import Search from './search.jsx';
 import {colors} from '../utils.js';
+import burger from '../resources/burger.svg';
 
-export default function Header({...props}) {
+export default function Header(props) {
     const {
         username,
         isAdmin,
@@ -15,38 +17,45 @@ export default function Header({...props}) {
 
     const adminButtons = [
         {
-            text: 'Create Post',
-            fn: () => openCreatePostPage(true)
-        },
-        {
             text: 'Blacklist',
             fn: () => openBlackListPage(true)
+        },
+        {
+            text: 'Create Post',
+            fn: () => openCreatePostPage(true)
         }
     ];
 
     return (
         <TopBar>
             <h1 onClick={closeAllPages}>Blogger</h1>
-            <div className="options">
-                {isAdmin &&
-                    adminButtons.map((btn, index) => (
-                        <button key={index} onClick={btn.fn}>
-                            {btn.text}
-                        </button>
-                    ))}
-                {username ? (
-                    <button
-                        onClick={() => {
-                            setUserDetails(undefined, false);
-                            closeAllPages();
-                        }}
-                    >
-                        Logout
-                    </button>
-                ) : (
-                    <button onClick={openLoginPage}>Login</button>
+            <div className="menu">
+                {isAdmin && (
+                    <React.Fragment>
+                        <img src={burger} alt="burger icon" />
+                        <div className="menu-items">
+                            {adminButtons.map((btn, index) => (
+                                <button key={index} onClick={btn.fn}>
+                                    {btn.text}
+                                </button>
+                            ))}
+                        </div>
+                    </React.Fragment>
                 )}
             </div>
+            <Search />
+            {username ? (
+                <button
+                    onClick={() => {
+                        setUserDetails(undefined, false);
+                        closeAllPages();
+                    }}
+                >
+                    Logout
+                </button>
+            ) : (
+                <button onClick={openLoginPage}>Login</button>
+            )}
         </TopBar>
     );
 }
@@ -55,14 +64,14 @@ const TopBar = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    align-items: center;
     background-color: ${colors.main};
     position: sticky;
     top: 0;
     height: 4.5rem;
 
     h1 {
-        margin: 0 1rem;
+        margin-left: 3rem;
         color: white;
         cursor: pointer;
     }
@@ -78,13 +87,46 @@ const TopBar = styled.div`
         border-radius: 1rem;
         outline: none;
         font-size: 1rem;
-        margin: 0 1rem;
+        margin-right: 3rem;
         cursor: pointer;
     }
 
-    .options {
+    .menu {
         display: flex;
-        flex-flow: row wrap;
-        align-items: center;
+        flex-flow: column wrap;
+        padding: 0.75rem 0;
+        min-width: 3rem;
+
+        img {
+            width: 3rem;
+        }
+
+        .menu-items {
+            display: none;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            position: absolute;
+            top: 4.5rem;
+            left: 0;
+            background: ${colors.main};
+            padding-bottom: 1rem;
+            width: 22rem;
+            border-bottom-right-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+
+            button {
+                margin-right: 0.25rem;
+            }
+
+            :hover {
+                display: flex;
+            }
+        }
+
+        :hover {
+            .menu-items {
+                display: flex;
+            }
+        }
     }
 `;

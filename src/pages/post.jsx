@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import Comment from '../components/comment.jsx';
 import {capitalizeFirstLetter} from '../utils.js';
 
-export default function Post({...props}) {
+export default function Post(props) {
     const url = 'http://localhost/mysql/les4/blog-backend/post.php',
         [author, setAuthor] = useState(''),
         [title, setTitle] = useState(''),
         [postContent, setPostContent] = useState(''),
-        {blogPostId} = props;
+        {username, blogPostId} = props;
 
     useEffect(() => {
         function fetchData() {
@@ -31,6 +32,7 @@ export default function Post({...props}) {
             <h2>{capitalizeFirstLetter(title)}</h2>
             <h3>By: {capitalizeFirstLetter(author)}</h3>
             <p>{capitalizeFirstLetter(postContent)}</p>
+            <Comment username={username} />
         </StyledPost>
     );
 }
@@ -44,5 +46,6 @@ const StyledPost = styled.div`
 
     p {
         line-height: 1.5rem;
+        margin-bottom: 3rem;
     }
 `;
