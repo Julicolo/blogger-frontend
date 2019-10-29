@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 import search from '../resources/search.svg';
@@ -8,6 +8,19 @@ export default function Search(props) {
     const url = 'http://localhost/mysql/les4/blog-backend/search.php',
         [input, setInput] = useState(''),
         [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        function bindEscapeKey(event) {
+            const key = event.key;
+            if (key === 'Escape') {
+                setPosts([]);
+            }
+        }
+
+        document.addEventListener('keydown', bindEscapeKey);
+
+        return () => document.removeEventListener('keydown');
+    }, []);
 
     function handleChange(event) {
         setInput(event.target.value);
@@ -36,14 +49,12 @@ export default function Search(props) {
                 />
                 <ResultsBar display={posts === [] ? 'hidden' : 'flex'}>
                     {posts.map(post => {
+                        if (post === [] || post.id > 5) return false;
+
                         return (
                             <div className="post" key={post.id}>
-                                <h2>{capitalizeFirstLetter(post.post_content.slice(0, 25)) + '...'}</h2>
-                                <p>
-                                    {post.post_content === ''
-                                        ? ''
-                                        : capitalizeFirstLetter(post.post_content.slice(0, 50)) + '...'}
-                                </p>
+                                <h2>{capitalizeFirstLetter(post.title.slice(0, 50)) + '...'}</h2>
+                                <p>{capitalizeFirstLetter(post.post_content.slice(0, 100)) + '...'}</p>
                                 <h3>{capitalizeFirstLetter(post.author_name)}</h3>
                             </div>
                         );
@@ -80,31 +91,13 @@ const ResultsBar = styled.div`
     display: ${props => props.display};
     flex-flow: column wrap;
     min-width: 100%;
-    background: grey;
+    background: ${colors.main};
+    border-radius: 1rem;
 
-    .menu-items {
-        display: none;
-        flex-flow: row wrap;
-        justify-content: space-around;
-        position: absolute;
-        top: 4.5rem;
-        left: 0;
-        background: ${colors.main};
-        padding-bottom: 1rem;
-        width: 22rem;
-        border-bottom-right-radius: 1rem;
-        border-bottom-left-radius: 1rem;
-
-        button {
-            margin-right: 0.25rem;
-        }
-
-        :hover {
-            display: flex;
-        }
-
-        &.visible {
-            display: flex;
-        }
+    .post {
+        margin: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 1rem;
     }
 `;
