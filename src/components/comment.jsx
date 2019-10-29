@@ -18,14 +18,7 @@ export default function Comment(props) {
             });
             // .then(response => response.json())
             // .then(result => {
-            //     if (result === null) {
-            //         setUsername('');
-            //         setPassword('');
-            //         passwordCorrect(false);
-            //     } else {
-            //         props.setUserDetails(result[0].username, result[0].admin);
-            //         props.closeAllPages();
-            //     }
+            //
             // });
         }
     }

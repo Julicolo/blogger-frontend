@@ -29,7 +29,7 @@ export default function Header(props) {
     return (
         <TopBar>
             <h1 onClick={closeAllPages}>Blogger</h1>
-            <div className="menu">
+            <div className="menu" onClick={e => e.currentTarget.children[1].classList.toggle('visible')}>
                 {isAdmin && (
                     <React.Fragment>
                         <img src={burger} alt="burger icon" />
@@ -119,6 +119,10 @@ const TopBar = styled.div`
             }
 
             :hover {
+                display: flex;
+            }
+
+            &.visible {
                 display: flex;
             }
         }
