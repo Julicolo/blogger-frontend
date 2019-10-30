@@ -42,9 +42,9 @@ export default class Main extends React.Component {
         this.setState({isBlacklistPageOpen: true});
     };
 
-    setUserDetails = (username, isAdmin) => this.setState({username: username, isAdmin: isAdmin});
-
     setBlogPostId = id => this.setState({blogPostId: id});
+
+    setUserDetails = (username, isAdmin) => this.setState({username: username, isAdmin: isAdmin});
 
     render() {
         const {
@@ -66,6 +66,7 @@ export default class Main extends React.Component {
                     openLoginPage={this.openLoginPage}
                     openCreatePostPage={this.openCreatePostPage}
                     openBlackListPage={this.openBlackListPage}
+                    setBlogPostId={this.setBlogPostId}
                     setUserDetails={this.setUserDetails}
                 />
                 <Content>

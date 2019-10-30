@@ -8,6 +8,7 @@ export default function Header(props) {
     const {
         username,
         isAdmin,
+        setBlogPostId,
         setUserDetails,
         openCreatePostPage,
         openLoginPage,
@@ -43,7 +44,7 @@ export default function Header(props) {
                     </React.Fragment>
                 )}
             </div>
-            <Search />
+            <Search setBlogPostId={setBlogPostId} />
             {username ? (
                 <button
                     onClick={() => {

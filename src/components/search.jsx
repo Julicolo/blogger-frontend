@@ -7,20 +7,21 @@ import {capitalizeFirstLetter} from '../utils.js';
 export default function Search(props) {
     const url = 'http://localhost/mysql/les4/blog-backend/search.php',
         [input, setInput] = useState(''),
-        [posts, setPosts] = useState([]);
+        [posts, setPosts] = useState([]),
+        {setBlogPostId} = props;
 
     useEffect(() => {
-        function bindEscapeKey(event) {
-            const key = event.key;
-            if (key === 'Escape') {
-                setPosts([]);
-            }
-        }
-
-        document.addEventListener('keydown', bindEscapeKey);
+        document.addEventListener('keydown', closeSearch);
 
         return () => document.removeEventListener('keydown');
     }, []);
+
+    function closeSearch(event) {
+        const key = event.key;
+        if (key === 'Escape') {
+            setPosts([]);
+        }
+    }
 
     function handleChange(event) {
         setInput(event.target.value);
@@ -52,7 +53,14 @@ export default function Search(props) {
                         if (post === [] || post.id > 5) return false;
 
                         return (
-                            <div className="post" key={post.id}>
+                            <div
+                                className="post"
+                                key={post.id}
+                                onClick={() => {
+                                    setPosts([]);
+                                    setBlogPostId(post.id);
+                                }}
+                            >
                                 <h2>{capitalizeFirstLetter(post.title.slice(0, 50)) + '...'}</h2>
                                 <p>{capitalizeFirstLetter(post.post_content.slice(0, 100)) + '...'}</p>
                                 <h3>{capitalizeFirstLetter(post.author_name)}</h3>
@@ -99,5 +107,6 @@ const ResultsBar = styled.div`
         padding: 1rem;
         background: white;
         border-radius: 1rem;
+        cursor: pointer;
     }
 `;
