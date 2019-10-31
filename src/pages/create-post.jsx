@@ -43,7 +43,7 @@ export default function CreatePost(props) {
                     onChange={e => setPostContent(e.target.value)}
                 />
             </div>
-            <button className={title === '' || postContent === '' ? 'deactive' : ''} onClick={handleClick}>
+            <button className={title === '' || postContent === '' ? 'inactive' : ''} onClick={handleClick}>
                 Submit blog post!
             </button>
         </StyledForm>
@@ -67,7 +67,7 @@ const StyledForm = styled.div`
         font-size: 1.5rem;
         color: white;
         cursor: pointer;
-        &.deactive {
+        &.inactive {
             background: #999;
             cursor: not-allowed;
         }

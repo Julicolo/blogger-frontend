@@ -3,52 +3,63 @@ import styled from 'styled-components';
 import {colors} from '../utils.js';
 
 export default function Blacklist(props) {
-    const url = 'http://localhost/mysql/les4/blog-backend/blacklist.php',
+    const url = 'http://localhost/mysql/les4/blog-backend/blacklist/',
         [ipAdresses, setIpAdressses] = useState([]),
-        [addId, setAddId] = useState(''),
-        [deleteId, setDeleteId] = useState(undefined);
+        [adressToBlock, setAdressToBlock] = useState('');
 
     useEffect(() => {
-        function fetchData() {
-            return fetch(url)
-                .then(res => res.json())
-                .then(result => {
-                    setIpAdressses([...result]);
-                });
-        }
-
-        fetchData();
+        fetch(url + 'index.php')
+            .then(res => res.json())
+            .then(setIpAdressses);
     }, []);
 
     function addIpAdress() {
-        return fetch(url, {
+        return fetch(url + 'add.php', {
             method: 'POST',
             body: JSON.stringify({
-                add: addId
+                add: adressToBlock
             })
-        }).then(() => setAddId(true));
+        })
+            .then(res => res.json())
+            .then(result => {
+                setAdressToBlock('');
+
+                setIpAdressses([result, ...ipAdresses]);
+            });
     }
 
     function removeIpAdress(id) {
-        return fetch(url, {
+        return fetch(url + 'delete.php', {
             method: 'POST',
             body: JSON.stringify({
                 delete: id
             })
-        }).then(() => setDeleteId(undefined));
+        }).then(() => {
+            setIpAdressses(
+                ipAdresses.filter(ipAdress => {
+                    return parseInt(ipAdress.id) !== id;
+                })
+            );
+        });
     }
 
     return (
         <React.Fragment>
             <UserOptions>
                 <label htmlFor="ip-adress">IP adress</label>
-                <input type="text" name="ip-adress" onChange={e => setAddId(e.target.value)} />
-                <button className={addId === '' ? 'deactive' : undefined} onClick={() => addIpAdress()}>
-                    Block!
+                <input
+                    type="text"
+                    name="ip-adress"
+                    value={adressToBlock}
+                    onChange={e => setAdressToBlock(e.target.value)}
+                />
+                <button className={adressToBlock === '' ? 'inactive' : undefined} onClick={addIpAdress}>
+                    <span role="img" aria-label="cross-emoticon">
+                        🙅🏾‍♀
+                    </span>
                 </button>
             </UserOptions>
             <StyledTable>
-                <h2>{deleteId || addId === true ? 'Successfully (un)blocked an IP adress!' : undefined}</h2>
                 <div className="row heading">
                     <span>ID</span>
                     <span>Date Added</span>
@@ -128,7 +139,6 @@ const UserOptions = styled.div`
 
     button {
         width: 10rem;
-        height: 3rem;
         margin: 3rem;
         border-radius: 0.2rem;
         outline: none;
@@ -137,9 +147,13 @@ const UserOptions = styled.div`
         font-size: 1.5rem;
         color: white;
         cursor: pointer;
-        &.deactive {
-            background: ${colors.deactive};
-            cursor: blocked;
+        &.inactive {
+            background: ${colors.inactive};
+            cursor: not-allowed;
+        }
+
+        span {
+            font-size: 5rem;
         }
     }
 `;

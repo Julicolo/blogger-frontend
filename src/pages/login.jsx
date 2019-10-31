@@ -54,7 +54,7 @@ export default function Login(props) {
                 />
             </div>
             <button
-                className={username === '' || password === '' ? 'deactive' : undefined}
+                className={username === '' || password === '' ? 'inactive' : undefined}
                 onClick={handleClick}
             >
                 Login
@@ -80,8 +80,8 @@ const StyledForm = styled.div`
         font-size: 1.5rem;
         color: white;
         cursor: pointer;
-        &.deactive {
-            background: ${colors.deactive};
+        &.inactive {
+            background: ${colors.inactive};
             cursor: blocked;
         }
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import Search from './search.jsx';
 import {colors} from '../utils.js';
@@ -6,45 +6,47 @@ import burger from '../resources/burger.svg';
 
 export default function Header(props) {
     const {
-        username,
-        isAdmin,
-        setBlogPostId,
-        setUserDetails,
-        openCreatePostPage,
-        openLoginPage,
-        openBlackListPage,
-        closeAllPages
-    } = props;
-
-    const adminButtons = [
-        {
-            text: 'Blacklist',
-            fn: () => openBlackListPage(true)
-        },
-        {
-            text: 'Create Post',
-            fn: () => openCreatePostPage(true)
-        }
-    ];
+            username,
+            isAdmin,
+            setUserDetails,
+            openCreatePostPage,
+            openLoginPage,
+            openBlackListPage,
+            closeAllPages,
+            setSearchInput
+        } = props,
+        [isMenuOpen, setMenuState] = useState(false),
+        adminButtons = [
+            {
+                text: 'Blacklist',
+                fn: () => openBlackListPage(true)
+            },
+            {
+                text: 'Create Post',
+                fn: () => openCreatePostPage(true)
+            }
+        ];
 
     return (
         <TopBar>
             <h1 onClick={closeAllPages}>Blogger</h1>
-            <div className="menu" onClick={e => e.currentTarget.children[1].classList.toggle('visible')}>
+            <div className="menu">
                 {isAdmin && (
                     <React.Fragment>
-                        <img src={burger} alt="burger icon" />
-                        <div className="menu-items">
-                            {adminButtons.map((btn, index) => (
-                                <button key={index} onClick={btn.fn}>
-                                    {btn.text}
-                                </button>
-                            ))}
-                        </div>
+                        <img src={burger} alt="burger menu" onClick={() => setMenuState(!isMenuOpen)} />
+                        {isMenuOpen && (
+                            <div className="menu-items">
+                                {adminButtons.map((btn, index) => (
+                                    <button key={index} onClick={btn.fn}>
+                                        {btn.text}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </React.Fragment>
                 )}
             </div>
-            <Search setBlogPostId={setBlogPostId} />
+            <Search setSearchInput={setSearchInput} />
             {username ? (
                 <button
                     onClick={() => {
@@ -103,7 +105,7 @@ const TopBar = styled.div`
         }
 
         .menu-items {
-            display: none;
+            display: flex;
             flex-flow: row wrap;
             justify-content: space-around;
             position: absolute;
@@ -117,20 +119,6 @@ const TopBar = styled.div`
 
             button {
                 margin-right: 0.25rem;
-            }
-
-            :hover {
-                display: flex;
-            }
-
-            &.visible {
-                display: flex;
-            }
-        }
-
-        :hover {
-            .menu-items {
-                display: flex;
             }
         }
     }

@@ -36,7 +36,7 @@ export default function Comment(props) {
                 rows="3"
                 onChange={e => setComment(e.target.value)}
             />
-            <button className={comment === '' ? 'deactive' : undefined} onClick={handleClick}>
+            <button className={comment === '' ? 'inactive' : undefined} onClick={handleClick}>
                 Comment
             </button>
         </CommentSection>
@@ -59,7 +59,7 @@ const CommentSection = styled.div`
         font-size: 1.5rem;
         color: white;
         cursor: pointer;
-        &.deactive {
+        &.inactive {
             background: #999;
             cursor: not-allowed;
         }

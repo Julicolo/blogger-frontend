@@ -7,7 +7,7 @@ export const capitalizeFirstLetter = string => {
 export const colors = {
     main: '#3192e6',
     light: '#ddf1ff',
-    deactive: '#999'
+    inactive: '#999'
 };
 
 export const GlobalStyle = createGlobalStyle`

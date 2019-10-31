@@ -7,25 +7,22 @@ export default function Landing(props) {
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),
         [start, setNewStart] = useState(0),
-        {username, isAdmin, setBlogPostId} = props;
+        {username, isAdmin, setBlogPostId, searchInput} = props;
 
     useEffect(() => {
-        function fetchData() {
-            return fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({start: start})
-            })
-                .then(res => res.json())
-                .then(result => {
-                    if (result === null) {
-                        setEndReached(true);
-                        return;
-                    }
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({start: start})
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result === null) {
+                    setEndReached(true);
+                    return;
+                }
 
-                    setBlogPosts(posts => [...posts, ...result]);
-                });
-        }
-        fetchData();
+                setBlogPosts(posts => [...posts, ...result]);
+            });
     }, [start]);
 
     useEffect(() => {
@@ -43,10 +40,19 @@ export default function Landing(props) {
         return () => window.removeEventListener('scroll', loadMorePosts);
     }, []);
 
+    function keepPost(post) {
+        return (
+            post.id.toString().includes(searchInput) ||
+            post.title.includes(searchInput) ||
+            post.post_content.includes(searchInput) ||
+            post.author_name.includes(searchInput)
+        );
+    }
+
     return (
         <React.Fragment>
             {username && <Greeting>{'Welcome back, ' + username + ' :)'}</Greeting>}
-            {blogPosts.map(post => (
+            {blogPosts.filter(keepPost).map(post => (
                 <PostPreview key={post.id} onClick={() => setBlogPostId(post.id)}>
                     {isAdmin && <h2>Post ID: {post.id}</h2>}
                     <h2>{capitalizeFirstLetter(post.title)}</h2>

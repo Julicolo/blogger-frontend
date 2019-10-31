@@ -15,7 +15,8 @@ export default class Main extends React.Component {
         blogPostId: undefined,
         isLoginPageOpen: false,
         isBlacklistPageOpen: false,
-        isCreatePostPageOpen: false
+        isCreatePostPageOpen: false,
+        searchInput: ''
     };
 
     closeAllPages = () => {
@@ -44,7 +45,9 @@ export default class Main extends React.Component {
 
     setBlogPostId = id => this.setState({blogPostId: id});
 
-    setUserDetails = (username, isAdmin) => this.setState({username: username, isAdmin: isAdmin});
+    setUserDetails = (username, isAdmin) => this.setState({username, isAdmin});
+
+    setSearchInput = searchInput => this.setState({searchInput});
 
     render() {
         const {
@@ -53,7 +56,8 @@ export default class Main extends React.Component {
             blogPostId,
             isLoginPageOpen,
             isCreatePostPageOpen,
-            isBlacklistPageOpen
+            isBlacklistPageOpen,
+            searchInput
         } = this.state;
 
         return (
@@ -68,6 +72,7 @@ export default class Main extends React.Component {
                     openBlackListPage={this.openBlackListPage}
                     setBlogPostId={this.setBlogPostId}
                     setUserDetails={this.setUserDetails}
+                    setSearchInput={this.setSearchInput}
                 />
                 <Content>
                     {isLoginPageOpen && (
@@ -88,6 +93,7 @@ export default class Main extends React.Component {
                                 username={username}
                                 isAdmin={isAdmin}
                                 setBlogPostId={this.setBlogPostId}
+                                searchInput={searchInput}
                             />
                         )
                     )}
