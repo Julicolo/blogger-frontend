@@ -4,35 +4,31 @@ import Comment from '../components/comment.jsx';
 import {capitalizeFirstLetter} from '../utils.js';
 
 export default function Post(props) {
-    const url = 'http://localhost/mysql/les4/blog-backend/post.php',
+    const {username, blogPostId, isAdmin} = props,
         [author, setAuthor] = useState(''),
         [title, setTitle] = useState(''),
         [postContent, setPostContent] = useState(''),
-        {username, blogPostId} = props;
+        url = 'http://localhost/mysql/les4/blog-backend/post.php';
 
     useEffect(() => {
-        function fetchData() {
-            return fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({id: blogPostId})
-            })
-                .then(res => res.json())
-                .then(result => {
-                    setAuthor(result[0].author_name);
-                    setTitle(result[0].title);
-                    setPostContent(result[0].post_content);
-                });
-        }
-
-        fetchData();
-    });
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({id: blogPostId})
+        })
+            .then(res => res.json())
+            .then(result => {
+                setAuthor(result[0].author_name);
+                setTitle(result[0].title);
+                setPostContent(result[0].post_content);
+            });
+    }, [blogPostId]);
 
     return (
         <StyledPost>
             <h2>{capitalizeFirstLetter(title)}</h2>
             <h3>By: {capitalizeFirstLetter(author)}</h3>
             <p>{capitalizeFirstLetter(postContent)}</p>
-            <Comment username={username} />
+            <Comment username={username || 'guest'} isAdmin={isAdmin} blogPostId={blogPostId} />
         </StyledPost>
     );
 }

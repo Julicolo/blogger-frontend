@@ -71,6 +71,7 @@ export default function Landing(props) {
         </React.Fragment>
     );
 }
+
 const Greeting = styled.h2`
     margin: 0 0 3rem;
     color: ${colors.main};

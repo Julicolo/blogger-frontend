@@ -23,7 +23,6 @@ export default function Blacklist(props) {
             .then(res => res.json())
             .then(result => {
                 setAdressToBlock('');
-
                 setIpAdressses([result, ...ipAdresses]);
             });
     }
@@ -35,11 +34,7 @@ export default function Blacklist(props) {
                 delete: id
             })
         }).then(() => {
-            setIpAdressses(
-                ipAdresses.filter(ipAdress => {
-                    return parseInt(ipAdress.id) !== id;
-                })
-            );
+            setIpAdressses(ipAdresses.filter(ipAdress => ipAdress.id !== id));
         });
     }
 

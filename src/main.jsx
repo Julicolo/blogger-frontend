@@ -84,7 +84,7 @@ export default class Main extends React.Component {
                     {isBlacklistPageOpen && <Blacklist />}
 
                     {blogPostId !== undefined ? (
-                        <Post blogPostId={blogPostId} username={username} />
+                        <Post blogPostId={blogPostId} username={username} isAdmin={isAdmin} />
                     ) : (
                         !isLoginPageOpen &&
                         !isBlacklistPageOpen &&
