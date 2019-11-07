@@ -1,6 +1,6 @@
 ## Frontend Blogger
 
-Frontend for a blogging platform using [React](https://reactjs.org/) and [Styled Components](https://www.styled-components.com/).
+Frontend for a blogging platform using [React](https://reactjs.org/) and [Styled Components](https://www.styled-components.com/).<br>
 [Backend](https://github.com/Julicolo/blogger-backend) can be run using [PHP](https://www.php.net/).
 
 ## Available Scripts
