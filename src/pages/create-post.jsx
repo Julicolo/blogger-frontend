@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function CreatePost(props) {
+export default function CreatePost({username}) {
     const [title, setTitle] = useState(''),
         [postContent, setPostContent] = useState(''),
         [isPostSubmitted, submitPost] = useState(false);
 
     function handleClick() {
-        const url = 'http://localhost/mysql/les4/blog-backend/create-post.php';
+        const url = 'http://localhost/mysql/les4/blog-backend/post/actions/add.php';
 
         if (title !== '' && postContent !== '') {
             fetch(url, {
@@ -16,13 +16,15 @@ export default function CreatePost(props) {
                 body: JSON.stringify({
                     title,
                     postContent,
-                    author: props.username
+                    author: username
                 })
-            }).then(() => {
-                setTitle('');
-                setPostContent('');
-                submitPost(true);
-            });
+            })
+                .then(res => res.json())
+                .then(() => {
+                    setTitle('');
+                    setPostContent('');
+                    submitPost(true);
+                });
         }
     }
 

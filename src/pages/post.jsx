@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import Comment from '../components/comment.jsx';
 import {capitalizeFirstLetter} from '../utils.js';
 
-export default function Post(props) {
-    const {username, blogPostId, isAdmin} = props,
+export default function Post({username, blogPostId, isAdmin}) {
+    const url = 'http://localhost/mysql/les4/blog-backend/post/',
         [author, setAuthor] = useState(''),
         [title, setTitle] = useState(''),
-        [postContent, setPostContent] = useState(''),
-        url = 'http://localhost/mysql/les4/blog-backend/post.php';
+        [postContent, setPostContent] = useState('');
 
     useEffect(() => {
         fetch(url, {

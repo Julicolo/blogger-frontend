@@ -4,18 +4,17 @@ import Search from './search.jsx';
 import {colors} from '../utils.js';
 import burger from '../resources/burger.svg';
 
-export default function Header(props) {
-    const {
-            username,
-            isAdmin,
-            setUserDetails,
-            openCreatePostPage,
-            openLoginPage,
-            openBlackListPage,
-            closeAllPages,
-            setSearchInput
-        } = props,
-        [isMenuOpen, setMenuState] = useState(false),
+export default function Header({
+    username,
+    isAdmin,
+    setUserDetails,
+    openCreatePostPage,
+    openLoginPage,
+    openBlackListPage,
+    closeAllPages,
+    setSearchInput
+}) {
+    const [isMenuOpen, setMenuState] = useState(false),
         adminButtons = [
             {
                 text: 'Blacklist',

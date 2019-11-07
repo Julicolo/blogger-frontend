@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function Login(props) {
+export default function Login({closeAllPages, setUserDetails}) {
     const [username, setUsername] = useState('admin'),
         [password, setPassword] = useState('admin'),
         [isPasswordCorrect, passwordCorrect] = useState(true);
@@ -18,15 +18,15 @@ export default function Login(props) {
                     password
                 })
             })
-                .then(response => response.json())
+                .then(res => res.json())
                 .then(result => {
                     if (result === null) {
                         setUsername('');
                         setPassword('');
                         passwordCorrect(false);
                     } else {
-                        props.setUserDetails(result[0].username, result[0].admin);
-                        props.closeAllPages();
+                        setUserDetails(result[0].username, result[0].admin);
+                        closeAllPages();
                     }
                 });
         }

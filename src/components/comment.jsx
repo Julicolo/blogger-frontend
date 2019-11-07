@@ -2,13 +2,12 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function Comment(props) {
+export default function Comment({username, isAdmin, blogPostId}) {
     const url = 'http://localhost/mysql/les4/blog-backend/comments/',
         [comments, setComments] = useState([]),
         [newComment, setNewComment] = useState(''),
         [deleteReason, setDeleteReason] = useState(''),
-        [editCommentId, toggleEditMenuId] = useState(''),
-        {username, isAdmin, blogPostId} = props;
+        [editCommentId, toggleEditMenuId] = useState('');
 
     useEffect(() => {
         fetchComments();
@@ -27,7 +26,7 @@ export default function Comment(props) {
 
     function submitComment() {
         if (newComment !== '') {
-            fetch(url + 'add.php', {
+            fetch(url + 'actions/add.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     post_id: blogPostId,
@@ -39,7 +38,7 @@ export default function Comment(props) {
     }
 
     function deleteComment() {
-        fetch(url + 'delete.php', {
+        fetch(url + 'actions/delete.php', {
             method: 'POST',
             body: JSON.stringify({
                 id: editCommentId,

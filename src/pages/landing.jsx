@@ -2,12 +2,11 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors, capitalizeFirstLetter} from '../utils.js';
 
-export default function Landing(props) {
-    const url = 'http://localhost/mysql/les4/blog-backend/posts.php',
+export default function Landing({username, isAdmin, setBlogPostId, searchInput}) {
+    const url = 'http://localhost/mysql/les4/blog-backend/',
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),
-        [start, setNewStart] = useState(0),
-        {username, isAdmin, setBlogPostId, searchInput} = props;
+        [start, setNewStart] = useState(0);
 
     useEffect(() => {
         fetch(url, {

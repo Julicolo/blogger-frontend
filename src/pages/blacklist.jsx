@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors} from '../utils.js';
 
-export default function Blacklist(props) {
+export default function Blacklist() {
     const url = 'http://localhost/mysql/les4/blog-backend/blacklist/',
         [ipAdresses, setIpAdressses] = useState([]),
         [adressToBlock, setAdressToBlock] = useState('');
@@ -14,7 +14,7 @@ export default function Blacklist(props) {
     }, []);
 
     function addIpAdress() {
-        return fetch(url + 'add.php', {
+        return fetch(url + 'actions/add.php', {
             method: 'POST',
             body: JSON.stringify({
                 add: adressToBlock
@@ -28,7 +28,7 @@ export default function Blacklist(props) {
     }
 
     function removeIpAdress(id) {
-        return fetch(url + 'delete.php', {
+        return fetch(url + 'actions/delete.php', {
             method: 'POST',
             body: JSON.stringify({
                 delete: id
