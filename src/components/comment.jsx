@@ -1,31 +1,30 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors, submitRatingHandler} from '../utils.js';
 
-export default function Comment({username, isAdmin, blogPostId}) {
+export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) {
     const url = 'http://localhost/mysql/les4/blog-backend/comments/',
         [comments, setComments] = useState([]),
         [newComment, setNewComment] = useState(''),
         [deleteReason, setDeleteReason] = useState(''),
         [editCommentId, toggleEditMenuId] = useState('');
 
-    useEffect(() => {
-        fetchComments();
-    }, []); // eslint-disable-line
+    useEffect(fetchComments, []);
 
     function fetchComments() {
-        return fetch(url, {
+        fetch(url, {
             method: 'POST',
             body: JSON.stringify({id: blogPostId})
         })
             .then(res => res.json())
             .then(result => {
-                setComments([...result]);
-            });
+                setComments(result);
+            })
+            .catch(console.error);
     }
 
     function submitComment() {
-        if (newComment !== '') {
+        if (newComment !== '' && !isBlacklisted) {
             fetch(url + 'actions/add.php', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -63,7 +62,10 @@ export default function Comment({username, isAdmin, blogPostId}) {
                 rows="3"
                 onChange={e => setNewComment(e.target.value)}
             />
-            <button className={newComment === '' ? 'inactive' : undefined} onClick={submitComment}>
+            <button
+                className={newComment === '' || isBlacklisted ? 'inactive' : undefined}
+                onClick={submitComment}
+            >
                 Comment
             </button>
             <hr />
@@ -87,8 +89,27 @@ export default function Comment({username, isAdmin, blogPostId}) {
                 ) : (
                     <div className="comment" key={comment.id}>
                         <div className="comment-heading">
-                            <span>{comment.name}</span>
-                            <span>{comment.date}</span>
+                            <div className="text-wrapper">
+                                <span>{comment.date}</span>
+                                <span>{comment.name}</span>
+                            </div>
+                            <div className="rating">
+                                <span
+                                    role="img"
+                                    aria-label="cross-emoticon"
+                                    onClick={submitRatingHandler({id: blogPostId, type: 'post', value: 1})}
+                                >
+                                    🔼
+                                </span>
+                                {comment.rating || 0}
+                                <span
+                                    role="img"
+                                    aria-label="cross-emoticon"
+                                    onClick={submitRatingHandler({id: blogPostId, type: 'post', value: -1})}
+                                >
+                                    🔽
+                                </span>
+                            </div>
                             {isAdmin && (
                                 <span
                                     role="img"
@@ -152,6 +173,22 @@ const CommentSection = styled.div`
             flex-flow: row wrap;
             justify-content: space-between;
             margin: 0.5rem 0;
+
+            .text-wrapper {
+                display: flex;
+                flex-flow: column wrap;
+
+                h2 {
+                    margin-top: 0;
+                }
+            }
+
+            .rating {
+                display: flex;
+                flex-flow: column wrap;
+                justify-content: center;
+                align-items: center;
+            }
         }
     }
 `;

@@ -13,11 +13,18 @@ export default class Main extends React.Component {
         isAdmin: false,
         username: undefined,
         blogPostId: undefined,
+        isBlacklisted: undefined,
         isLoginPageOpen: false,
         isBlacklistPageOpen: false,
         isCreatePostPageOpen: false,
         searchInput: ''
     };
+
+    componentDidMount() {
+        fetch('http://localhost/mysql/les4/blog-backend/blacklist/?me')
+            .then(res => res.json())
+            .then(result => this.setState({isBlacklisted: result[0].valid !== 0}));
+    }
 
     closeAllPages = () => {
         this.setState({
@@ -53,6 +60,7 @@ export default class Main extends React.Component {
         const {
             username,
             isAdmin,
+            isBlacklisted,
             blogPostId,
             isLoginPageOpen,
             isCreatePostPageOpen,
@@ -84,7 +92,12 @@ export default class Main extends React.Component {
                     {isBlacklistPageOpen && <Blacklist />}
 
                     {blogPostId !== undefined ? (
-                        <Post blogPostId={blogPostId} username={username} isAdmin={isAdmin} />
+                        <Post
+                            blogPostId={blogPostId}
+                            username={username}
+                            isAdmin={isAdmin}
+                            isBlacklisted={isBlacklisted}
+                        />
                     ) : (
                         !isLoginPageOpen &&
                         !isBlacklistPageOpen &&
