@@ -8,7 +8,7 @@ export default function Login({closeAllPages, setUserDetails}) {
         [isPasswordCorrect, passwordCorrect] = useState(true);
 
     function handleClick() {
-        const url = 'http://localhost/mysql/les4/blog-backend/login.php';
+        const url = 'http://localhost/blog-backend/login.php';
 
         if (username !== '' && password !== '') {
             fetch(url, {

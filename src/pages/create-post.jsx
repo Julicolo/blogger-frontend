@@ -8,7 +8,7 @@ export default function CreatePost({username}) {
         [isPostSubmitted, submitPost] = useState(false);
 
     function handleClick() {
-        const url = 'http://localhost/mysql/les4/blog-backend/post/actions/add.php';
+        const url = 'http://localhost/blog-backend/post/actions/add.php';
 
         if (title !== '' && postContent !== '') {
             fetch(url, {

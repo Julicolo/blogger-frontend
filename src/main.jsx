@@ -21,7 +21,7 @@ export default class Main extends React.Component {
     };
 
     componentDidMount() {
-        fetch('http://localhost/mysql/les4/blog-backend/blacklist/?me')
+        fetch('http://localhost/blog-backend/blacklist/?me')
             .then(res => res.json())
             .then(result => this.setState({isBlacklisted: result[0].valid !== 0}));
     }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {colors, submitRatingHandler} from '../utils.js';
 
 export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) {
-    const url = 'http://localhost/mysql/les4/blog-backend/comments/',
+    const url = 'http://localhost/blog-backend/comments/',
         [comments, setComments] = useState([]),
         [newComment, setNewComment] = useState(''),
         [deleteReason, setDeleteReason] = useState(''),

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {colors, capitalizeFirstLetter} from '../utils.js';
 
 export default function Landing({username, isAdmin, setBlogPostId, searchInput}) {
-    const url = 'http://localhost/mysql/les4/blog-backend/',
+    const url = 'http://localhost/blog-backend/',
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),
         [start, setNewStart] = useState(0);

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {colors} from '../utils.js';
 
 export default function Blacklist() {
-    const url = 'http://localhost/mysql/les4/blog-backend/blacklist/',
+    const url = 'http://localhost/blog-backend/blacklist/',
         [ipAdresses, setIpAdressses] = useState([]),
         [adressToBlock, setAdressToBlock] = useState('');
 

@@ -7,7 +7,7 @@ export const capitalizeFirstLetter = string => {
 const submitRatingHandlers = {};
 
 export function submitRatingHandler(params) {
-    const url = 'http://localhost/mysql/les4/blog-backend/change-rating/',
+    const url = 'http://localhost/blog-backend/change-rating/',
         key = JSON.stringify(params);
 
     if (!submitRatingHandlers[key]) {

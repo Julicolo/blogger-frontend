@@ -4,7 +4,7 @@ import Comment from '../components/comment.jsx';
 import {capitalizeFirstLetter, submitRatingHandler} from '../utils.js';
 
 export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
-    const url = 'http://localhost/mysql/les4/blog-backend/post/',
+    const url = 'http://localhost/blog-backend/post/',
         [author, setAuthor] = useState(''),
         [title, setTitle] = useState(''),
         [rating, setRating] = useState(0),
@@ -17,6 +17,7 @@ export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
         })
             .then(res => res.json())
             .then(result => {
+                console.log(blogPostId);
                 setAuthor(result[0].author_name);
                 setTitle(result[0].title);
                 setRating(result[0].rating || 0);
