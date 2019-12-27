@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors} from '../utils';
 import github from '../resources/github.svg';
 
 export default function Footer() {

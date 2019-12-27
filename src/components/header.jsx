@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import Search from './search.jsx';
-import {colors} from '../utils.js';
+import {colors} from '../utils';
 import burger from '../resources/burger.svg';
 
 export default function Header({
@@ -11,27 +11,41 @@ export default function Header({
     openCreatePostPage,
     openLoginPage,
     openBlackListPage,
+    openUserManagementPage,
     closeAllPages,
     setSearchInput
 }) {
     const [isMenuOpen, setMenuState] = useState(false),
         adminButtons = [
             {
-                text: 'Blacklist',
-                fn: () => openBlackListPage(true)
+                text: 'Logout',
+                fn: () => {
+                    setUserDetails(undefined, false);
+                    closeAllPages();
+                }
             },
             {
                 text: 'Create Post',
                 fn: () => openCreatePostPage(true)
+            },
+
+            {
+                text: 'User Management',
+                fn: () => openUserManagementPage(true)
+            },
+            {
+                text: 'Blacklist',
+                fn: () => openBlackListPage(true)
             }
         ];
 
     return (
         <TopBar>
             <h1 onClick={closeAllPages}>Blogger</h1>
-            <div className="menu">
-                {isAdmin && (
-                    <React.Fragment>
+            <Search setSearchInput={setSearchInput} />
+            {username ? (
+                isAdmin ? (
+                    <div className="menu">
                         <img src={burger} alt="burger menu" onClick={() => setMenuState(!isMenuOpen)} />
                         {isMenuOpen && (
                             <div className="menu-items">
@@ -42,19 +56,10 @@ export default function Header({
                                 ))}
                             </div>
                         )}
-                    </React.Fragment>
-                )}
-            </div>
-            <Search setSearchInput={setSearchInput} />
-            {username ? (
-                <button
-                    onClick={() => {
-                        setUserDetails(undefined, false);
-                        closeAllPages();
-                    }}
-                >
-                    Logout
-                </button>
+                    </div>
+                ) : (
+                    <button onClick={adminButtons.find(btn => btn.text === 'Logout').fn}>Logout</button>
+                )
             ) : (
                 <button onClick={openLoginPage}>Login</button>
             )}
@@ -83,7 +88,7 @@ const TopBar = styled.div`
         justify-content: center;
         align-items: center;
         height: 2.2rem;
-        width: 9rem;
+        width: 10rem;
         color: ${colors.main};
         border: 1px solid ${colors.main};
         border-radius: 1rem;
@@ -97,6 +102,7 @@ const TopBar = styled.div`
         display: flex;
         flex-flow: column wrap;
         padding: 0.75rem 0;
+        margin-right: 6rem;
         min-width: 3rem;
 
         img {
@@ -105,19 +111,28 @@ const TopBar = styled.div`
 
         .menu-items {
             display: flex;
-            flex-flow: row wrap;
-            justify-content: space-around;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             top: 4.5rem;
-            left: 0;
+            right: 0;
             background: ${colors.main};
-            padding-bottom: 1rem;
-            width: 22rem;
+            padding: 1rem;
+            width: 15rem;
             border-bottom-right-radius: 1rem;
             border-bottom-left-radius: 1rem;
 
             button {
-                margin-right: 0.25rem;
+                margin-left: 1.5rem;
+
+                &:not(:last-child) {
+                    margin-bottom: 1.5rem;
+                }
+
+                &:last-child {
+                    margin-bottom: 0.5rem;
+                }
             }
         }
     }

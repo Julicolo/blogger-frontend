@@ -4,19 +4,23 @@ import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
 import CreatePost from './pages/create-post.jsx';
 import Blacklist from './pages/blacklist.jsx';
+import UserManagement from './pages/user-management.jsx';
 import Landing from './pages/landing.jsx';
 import Login from './pages/login.jsx';
 import Post from './pages/post.jsx';
 
 export default class Main extends React.Component {
     state = {
-        isAdmin: false,
-        username: undefined,
+        // isAdmin: false,
+        // username: undefined,
+        isAdmin: true,
+        username: 'admin',
         blogPostId: undefined,
         isBlacklisted: undefined,
         isLoginPageOpen: false,
         isBlacklistPageOpen: false,
         isCreatePostPageOpen: false,
+        isUserManagementPageOpen: false,
         searchInput: ''
     };
 
@@ -31,7 +35,8 @@ export default class Main extends React.Component {
             blogPostId: undefined,
             isLoginPageOpen: false,
             isBlacklistPageOpen: false,
-            isCreatePostPageOpen: false
+            isCreatePostPageOpen: false,
+            isUserManagementPageOpen: false
         });
     };
 
@@ -50,6 +55,11 @@ export default class Main extends React.Component {
         this.setState({isBlacklistPageOpen: true});
     };
 
+    openUserManagementPage = () => {
+        this.closeAllPages();
+        this.setState({isUserManagementPageOpen: true});
+    };
+
     setBlogPostId = id => this.setState({blogPostId: id});
 
     setUserDetails = (username, isAdmin) => this.setState({username, isAdmin});
@@ -65,6 +75,7 @@ export default class Main extends React.Component {
             isLoginPageOpen,
             isCreatePostPageOpen,
             isBlacklistPageOpen,
+            isUserManagementPageOpen,
             searchInput
         } = this.state;
 
@@ -78,6 +89,7 @@ export default class Main extends React.Component {
                     openLoginPage={this.openLoginPage}
                     openCreatePostPage={this.openCreatePostPage}
                     openBlackListPage={this.openBlackListPage}
+                    openUserManagementPage={this.openUserManagementPage}
                     setBlogPostId={this.setBlogPostId}
                     setUserDetails={this.setUserDetails}
                     setSearchInput={this.setSearchInput}
@@ -91,6 +103,8 @@ export default class Main extends React.Component {
 
                     {isBlacklistPageOpen && <Blacklist />}
 
+                    {isUserManagementPageOpen && <UserManagement />}
+
                     {blogPostId !== undefined ? (
                         <Post
                             blogPostId={blogPostId}
@@ -101,7 +115,8 @@ export default class Main extends React.Component {
                     ) : (
                         !isLoginPageOpen &&
                         !isBlacklistPageOpen &&
-                        !isCreatePostPageOpen && (
+                        !isCreatePostPageOpen &&
+                        !isUserManagementPageOpen && (
                             <Landing
                                 username={username}
                                 isAdmin={isAdmin}

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors} from '../utils';
 
 export default function Blacklist() {
     const url = 'http://localhost/blog-backend/blacklist/',
@@ -76,7 +76,7 @@ export default function Blacklist() {
     );
 }
 
-const StyledTable = styled.div`
+export const StyledTable = styled.div`
     display: flex;
     flex-flow: column wrap;
     margin: 0rem auto;
@@ -115,7 +115,7 @@ const StyledTable = styled.div`
     }
 `;
 
-const UserOptions = styled.div`
+export const UserOptions = styled.div`
     display: flex;
     flex-flow: column wrap;
     align-items: center;

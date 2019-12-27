@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors} from '../utils';
 
 export default function CreatePost({username}) {
     const [title, setTitle] = useState(''),

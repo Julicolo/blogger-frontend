@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {colors} from '../utils.js';
+import {colors} from '../utils';
 
 export default function Login({closeAllPages, setUserDetails}) {
     const [username, setUsername] = useState('admin'),

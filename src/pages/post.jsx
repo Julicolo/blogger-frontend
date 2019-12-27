@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Comment from '../components/comment.jsx';
-import {capitalizeFirstLetter, submitRatingHandler} from '../utils.js';
+import {capitalizeFirstLetter, submitRatingHandler} from '../utils';
 
 export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
     const url = 'http://localhost/blog-backend/post/',
