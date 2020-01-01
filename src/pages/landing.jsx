@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors, capitalizeFirstLetter} from '../utils.js';
 
-export default function Landing({username, isAdmin, setBlogPostId, searchInput}) {
+export default function Landing({username, authLevel, setBlogPostId, searchInput}) {
     const url = 'http://localhost/blog-backend/',
         [blogPosts, setBlogPosts] = useState([]),
         [isEndReached, setEndReached] = useState(false),
@@ -53,7 +53,7 @@ export default function Landing({username, isAdmin, setBlogPostId, searchInput})
             {username && <Greeting>{'Welcome back, ' + username + ' :)'}</Greeting>}
             {blogPosts.filter(keepPost).map(post => (
                 <PostPreview key={post.id} onClick={() => setBlogPostId(post.id)}>
-                    {isAdmin && <h2>Post ID: {post.id}</h2>}
+                    {authLevel > 3 && <h2>Post ID: {post.id}</h2>}
                     <h2>{capitalizeFirstLetter(post.title)}</h2>
                     <p>{capitalizeFirstLetter(post.post_content.slice(0, 600)) + '...'}</p>
                     <h3>By: {capitalizeFirstLetter(post.author_name)}</h3>

@@ -6,7 +6,7 @@ import burger from '../resources/burger.svg';
 
 export default function Header({
     username,
-    isAdmin,
+    authLevel,
     setUserDetails,
     openCreatePostPage,
     openLoginPage,
@@ -16,26 +16,38 @@ export default function Header({
     setSearchInput
 }) {
     const [isMenuOpen, setMenuState] = useState(false),
-        adminButtons = [
+        menuButtons = [
             {
+                authLevelNeeded: 0,
                 text: 'Logout',
                 fn: () => {
-                    setUserDetails(undefined, false);
+                    setUserDetails(undefined, 0);
                     closeAllPages();
                 }
             },
             {
+                authLevelNeeded: 1,
                 text: 'Create Post',
-                fn: () => openCreatePostPage(true)
-            },
-
-            {
-                text: 'User Management',
-                fn: () => openUserManagementPage(true)
+                fn: () => {
+                    setMenuState(false);
+                    openCreatePostPage(true);
+                }
             },
             {
+                authLevelNeeded: 2,
                 text: 'Blacklist',
-                fn: () => openBlackListPage(true)
+                fn: () => {
+                    setMenuState(false);
+                    openBlackListPage(true);
+                }
+            },
+            {
+                authLevelNeeded: 3,
+                text: 'User Management',
+                fn: () => {
+                    setMenuState(false);
+                    openUserManagementPage(true);
+                }
             }
         ];
 
@@ -44,22 +56,20 @@ export default function Header({
             <h1 onClick={closeAllPages}>Blogger</h1>
             <Search setSearchInput={setSearchInput} />
             {username ? (
-                isAdmin ? (
-                    <div className="menu">
-                        <img src={burger} alt="burger menu" onClick={() => setMenuState(!isMenuOpen)} />
-                        {isMenuOpen && (
-                            <div className="menu-items">
-                                {adminButtons.map((btn, index) => (
-                                    <button key={index} onClick={btn.fn}>
+                <div className="menu">
+                    <img src={burger} alt="burger menu" onClick={() => setMenuState(!isMenuOpen)} />
+                    {isMenuOpen && (
+                        <div className="menu-items">
+                            {menuButtons
+                                .filter(({authLevelNeeded}) => authLevelNeeded <= authLevel)
+                                .map(btn => (
+                                    <button key={btn.text} onClick={btn.fn}>
                                         {btn.text}
                                     </button>
                                 ))}
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <button onClick={adminButtons.find(btn => btn.text === 'Logout').fn}>Logout</button>
-                )
+                        </div>
+                    )}
+                </div>
             ) : (
                 <button onClick={openLoginPage}>Login</button>
             )}

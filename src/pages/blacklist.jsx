@@ -8,13 +8,13 @@ export default function Blacklist() {
         [adressToBlock, setAdressToBlock] = useState('');
 
     useEffect(() => {
-        fetch(url + 'index.php')
+        fetch(url)
             .then(res => res.json())
             .then(setIpAdressses);
     }, []);
 
     function addIpAdress() {
-        return fetch(url + 'actions/add.php', {
+        return fetch(url + 'actions/add', {
             method: 'POST',
             body: JSON.stringify({
                 add: adressToBlock
@@ -28,7 +28,7 @@ export default function Blacklist() {
     }
 
     function removeIpAdress(id) {
-        return fetch(url + 'actions/delete.php', {
+        return fetch(url + 'actions/delete', {
             method: 'POST',
             body: JSON.stringify({
                 delete: id

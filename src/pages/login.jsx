@@ -25,7 +25,7 @@ export default function Login({closeAllPages, setUserDetails}) {
                         setPassword('');
                         passwordCorrect(false);
                     } else {
-                        setUserDetails(result[0].username, result[0].admin);
+                        setUserDetails(result[0].username, result[0].authLevel);
                         closeAllPages();
                     }
                 });

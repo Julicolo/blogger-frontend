@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {colors, submitRatingHandler} from '../utils.js';
 
-export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) {
+export default function Comment({username, authLevel, blogPostId, isBlacklisted}) {
     const url = 'http://localhost/blog-backend/comments/',
         [comments, setComments] = useState([]),
         [newComment, setNewComment] = useState(''),
@@ -25,7 +25,7 @@ export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) 
 
     function submitComment() {
         if (newComment !== '' && !isBlacklisted) {
-            fetch(url + 'actions/add.php', {
+            fetch(url + 'actions/add', {
                 method: 'POST',
                 body: JSON.stringify({
                     post_id: blogPostId,
@@ -37,7 +37,7 @@ export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) 
     }
 
     function deleteComment() {
-        fetch(url + 'actions/delete.php', {
+        fetch(url + 'actions/delete', {
             method: 'POST',
             body: JSON.stringify({
                 id: editCommentId,
@@ -110,7 +110,7 @@ export default function Comment({username, isAdmin, blogPostId, isBlacklisted}) 
                                     🔽
                                 </span>
                             </div>
-                            {isAdmin && (
+                            {authLevel > 1 && (
                                 <span
                                     role="img"
                                     aria-label="cross-emoticon"

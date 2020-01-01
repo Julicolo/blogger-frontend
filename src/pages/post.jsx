@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Comment from '../components/comment.jsx';
 import {capitalizeFirstLetter, submitRatingHandler} from '../utils';
 
-export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
+export default function Post({username, blogPostId, authLevel, isBlacklisted}) {
     const url = 'http://localhost/blog-backend/post/',
         [author, setAuthor] = useState(''),
         [title, setTitle] = useState(''),
@@ -17,7 +17,6 @@ export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
         })
             .then(res => res.json())
             .then(result => {
-                console.log(blogPostId);
                 setAuthor(result[0].author_name);
                 setTitle(result[0].title);
                 setRating(result[0].rating || 0);
@@ -53,7 +52,7 @@ export default function Post({username, blogPostId, isAdmin, isBlacklisted}) {
             <p>{capitalizeFirstLetter(postContent)}</p>
             <Comment
                 username={username || 'guest'}
-                isAdmin={isAdmin}
+                authLevel={authLevel}
                 blogPostId={blogPostId}
                 isBlacklisted={isBlacklisted}
             />

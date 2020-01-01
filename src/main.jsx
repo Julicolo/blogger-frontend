@@ -11,10 +11,10 @@ import Post from './pages/post.jsx';
 
 export default class Main extends React.Component {
     state = {
-        // isAdmin: false,
-        // username: undefined,
-        isAdmin: true,
+        authLevel: 3,
         username: 'admin',
+        // authLevel: 1,
+        // username: undefined,
         blogPostId: undefined,
         isBlacklisted: undefined,
         isLoginPageOpen: false,
@@ -62,14 +62,14 @@ export default class Main extends React.Component {
 
     setBlogPostId = id => this.setState({blogPostId: id});
 
-    setUserDetails = (username, isAdmin) => this.setState({username, isAdmin});
+    setUserDetails = (username, authLevel) => this.setState({username, authLevel});
 
     setSearchInput = searchInput => this.setState({searchInput});
 
     render() {
         const {
             username,
-            isAdmin,
+            authLevel,
             isBlacklisted,
             blogPostId,
             isLoginPageOpen,
@@ -83,7 +83,7 @@ export default class Main extends React.Component {
             <Container>
                 <Header
                     username={username}
-                    isAdmin={isAdmin}
+                    authLevel={authLevel}
                     isLoginPageOpen={isLoginPageOpen}
                     closeAllPages={this.closeAllPages}
                     openLoginPage={this.openLoginPage}
@@ -109,7 +109,7 @@ export default class Main extends React.Component {
                         <Post
                             blogPostId={blogPostId}
                             username={username}
-                            isAdmin={isAdmin}
+                            authLevel={authLevel}
                             isBlacklisted={isBlacklisted}
                         />
                     ) : (
@@ -119,7 +119,7 @@ export default class Main extends React.Component {
                         !isUserManagementPageOpen && (
                             <Landing
                                 username={username}
-                                isAdmin={isAdmin}
+                                authLevel={authLevel}
                                 setBlogPostId={this.setBlogPostId}
                                 searchInput={searchInput}
                             />
