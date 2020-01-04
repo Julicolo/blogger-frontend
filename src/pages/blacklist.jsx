@@ -61,12 +61,12 @@ export default function Blacklist() {
                     <span>IP Adress</span>
                     <span>Delete</span>
                 </div>
-                {ipAdresses.map(ipObj => (
-                    <div className="row" key={ipObj.id}>
-                        <span>{ipObj.id}</span>
-                        <span>{ipObj.date_added}</span>
-                        <span>{ipObj.ip_adress}</span>
-                        <span role="img" aria-label="cross-emoticon" onClick={() => removeIpAdress(ipObj.id)}>
+                {ipAdresses.map(({id, date_added, ip_adress}) => (
+                    <div className="row" key={id}>
+                        <span>{id}</span>
+                        <span>{date_added}</span>
+                        <span>{ip_adress}</span>
+                        <span role="img" aria-label="cross-emoticon" onClick={() => removeIpAdress(id)}>
                             ❌
                         </span>
                     </div>

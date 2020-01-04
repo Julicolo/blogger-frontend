@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {colors, capitalizeFirstLetter} from '../utils.js';
+import {colors, capitalizeFirstLetter} from '../utils';
 
 export default function Landing({username, authLevel, setBlogPostId, searchInput}) {
     const url = 'http://localhost/blog-backend/',

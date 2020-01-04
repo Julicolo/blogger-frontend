@@ -13,7 +13,7 @@ export default class Main extends React.Component {
     state = {
         authLevel: 3,
         username: 'admin',
-        // authLevel: 1,
+        // authLevel: 0,
         // username: undefined,
         blogPostId: undefined,
         isBlacklisted: undefined,

@@ -42,18 +42,18 @@ export default function UserManagement() {
         );
     }
 
-    // function addUser(id) {
-    //     return fetch(url + 'actions/add', {
-    //         method: 'POST',
-    //         body: JSON.stringify({id: id, username: inputUsername, })
-    //     })
-    //         .then(res => res.json())
-    //         .then(result =>
-    //             result
-    //                 ? setUsers(users.filter(user => user.id !== id))
-    //                 : setError("You can't delete this user because it has posts linked to it!")
-    //         );
-    // }
+    function addUser() {
+        return fetch(url + 'actions/add', {
+            method: 'POST',
+            body: JSON.stringify({
+                username: inputUsername,
+                password: inputPassword,
+                authLevel: inputAuthLevel
+            })
+        })
+            .then(res => res.json())
+            .then(setError);
+    }
 
     useEffect(() => {
         fetch(url)
@@ -73,12 +73,13 @@ export default function UserManagement() {
                 <label htmlFor="auth-level">Auth Level</label>
                 <select value={inputAuthLevel} onChange={e => setInputAuthLevel(parseInt(e.target.value))}>
                     <option value="0">Normal</option>
-                    {authLevelOptions.map(opt => (
-                        <option key={opt.name} value={opt.level}>
-                            {opt.name}
+                    {authLevelOptions.map(({name, level}) => (
+                        <option key={name} value={level}>
+                            {name}
                         </option>
                     ))}
                 </select>
+                <button onClick={addUser}>Add user</button>
             </UserOptions>
             <div className="error-message">{error}</div>
             <StyledTable>
@@ -89,31 +90,20 @@ export default function UserManagement() {
                     ))}
                     <span>Delete</span>
                 </div>
-                {users.map(user => (
-                    <div className="row" key={user.id}>
-                        <span>{user.username}</span>
-                        <span
-                            role="img"
-                            aria-label="cross-emoticon"
-                            onClick={() => changeAuthLevel(user.id, 1)}
-                        >
-                            {user.authLevel > 0 ? '✅' : '❌'}
-                        </span>
-                        <span
-                            role="img"
-                            aria-label="cross-emoticon"
-                            onClick={() => changeAuthLevel(user.id, 2)}
-                        >
-                            {user.authLevel > 1 ? '✅' : '❌'}
-                        </span>
-                        <span
-                            role="img"
-                            aria-label="cross-emoticon"
-                            onClick={() => changeAuthLevel(user.id, 3)}
-                        >
-                            {user.authLevel > 2 ? '✅' : '❌'}
-                        </span>
-                        <span role="img" aria-label="cross-emoticon" onClick={() => removeUser(user.id)}>
+                {users.map(({id, username, authLevel}) => (
+                    <div className="row" key={id}>
+                        <span>{username}</span>
+                        {authLevelOptions.map(({level, name}, index) => (
+                            <span
+                                key={name}
+                                role="img"
+                                aria-label="cross-emoticon"
+                                onClick={() => changeAuthLevel(id, level)}
+                            >
+                                {authLevel > index ? '✅' : '❌'}
+                            </span>
+                        ))}
+                        <span role="img" aria-label="cross-emoticon" onClick={() => removeUser(id)}>
                             ❓
                         </span>
                     </div>
@@ -156,6 +146,10 @@ const StlyedUserManagement = styled.div`
 
         select {
             font-size: 1.3rem;
+        }
+
+        button {
+            min-height: 3rem;
         }
     }
 `;

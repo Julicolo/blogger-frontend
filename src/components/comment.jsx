@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {colors, submitRatingHandler} from '../utils.js';
+import {colors, submitRatingHandler} from '../utils';
 
 export default function Comment({username, authLevel, blogPostId, isBlacklisted}) {
     const url = 'http://localhost/blog-backend/comments/',
@@ -69,11 +69,11 @@ export default function Comment({username, authLevel, blogPostId, isBlacklisted}
                 Comment
             </button>
             <hr />
-            {comments.map(comment =>
-                editCommentId === comment.id ? (
-                    <div className="comment" key={comment.id}>
+            {comments.map(({id, name, date, rating, comment}) =>
+                editCommentId === id ? (
+                    <div className="comment" key={id}>
                         <div className="comment-heading">
-                            <span>{comment.name}</span>
+                            <span>{name}</span>
                             <span role="img" aria-label="check-emoticon" onClick={deleteComment}>
                                 ✅
                             </span>
@@ -87,11 +87,11 @@ export default function Comment({username, authLevel, blogPostId, isBlacklisted}
                         />
                     </div>
                 ) : (
-                    <div className="comment" key={comment.id}>
+                    <div className="comment" key={id}>
                         <div className="comment-heading">
                             <div className="text-wrapper">
-                                <span>{comment.date}</span>
-                                <span>{comment.name}</span>
+                                <span>{date}</span>
+                                <span>{name}</span>
                             </div>
                             <div className="rating">
                                 <span
@@ -101,7 +101,7 @@ export default function Comment({username, authLevel, blogPostId, isBlacklisted}
                                 >
                                     🔼
                                 </span>
-                                {comment.rating || 0}
+                                {rating || 0}
                                 <span
                                     role="img"
                                     aria-label="cross-emoticon"
@@ -114,14 +114,14 @@ export default function Comment({username, authLevel, blogPostId, isBlacklisted}
                                 <span
                                     role="img"
                                     aria-label="cross-emoticon"
-                                    onClick={() => toggleEditMenuId(comment.id)}
+                                    onClick={() => toggleEditMenuId(id)}
                                 >
                                     ❌
                                 </span>
                             )}
                         </div>
                         <br />
-                        <span>{comment.comment}</span>
+                        <span>{comment}</span>
                     </div>
                 )
             )}

@@ -62,9 +62,9 @@ export default function Header({
                         <div className="menu-items">
                             {menuButtons
                                 .filter(({authLevelNeeded}) => authLevelNeeded <= authLevel)
-                                .map(btn => (
-                                    <button key={btn.text} onClick={btn.fn}>
-                                        {btn.text}
+                                .map(({text, fn}) => (
+                                    <button key={text} onClick={fn}>
+                                        {text}
                                     </button>
                                 ))}
                         </div>
